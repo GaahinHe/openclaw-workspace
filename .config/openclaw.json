@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.1.30",
+    "lastTouchedAt": "2026-02-02T06:24:56.947Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-02-02T06:24:56.937Z",
+    "lastRunVersion": "2026.1.30",
+    "lastRunCommand": "configure",
+    "lastRunMode": "local"
+  },
+  "auth": {
+    "profiles": {
+      "minimax:default": {
+        "provider": "minimax",
+        "mode": "api_key"
+      }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "minimax": {
+        "baseUrl": "https://api.minimax.io/anthropic",
+        "api": "anthropic-messages",
+        "models": [
+          {
+            "id": "MiniMax-M2.1",
+            "name": "MiniMax M2.1",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 15,
+              "output": 60,
+              "cacheRead": 2,
+              "cacheWrite": 10
+            },
+            "contextWindow": 200000,
+            "maxTokens": 8192
+          }
+        ]
+      },
+      "lmstudio": {
+        "baseUrl": "http://localhost:1234/v1",
+        "api": "openai-chat",
+        "models": [
+          {
+            "id": "lmstudio-community/Qwen3-32B-MLX-4bit",
+            "name": "Qwen3-32B (本地)",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0
+            },
+            "contextWindow": 32768,
+            "maxTokens": 4096
+          },
+          {
+            "id": "lmstudio-community/QwQ-32B-GGUF",
+            "name": "QwQ-32B (本地)",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0
+            },
+            "contextWindow": 32768,
+            "maxTokens": 4096
+          },
+          {
+            "id": "Ex0bit/MiniMax-M2.1-PRISM",
+            "name": "MiniMax-M2.1-PRISM (本地)",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0
+            },
+            "contextWindow": 200000,
+            "maxTokens": 8192
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "lmstudio/lmstudio-community/Qwen3-32B-MLX-4bit",
+        "fallbacks": [
+          "lmstudio/lmstudio-community/QwQ-32B-GGUF",
+          "lmstudio/Ex0bit/MiniMax-M2.1-PRISM",
+          "minimax/MiniMax-M2.1",
+          "anthropic/claude-opus-4-5",
+          "huggingface/deepseek-ai/DeepSeek-V3.2",
+          "huggingface/moonshotai/Kimi-K2.5"
+        ]
+      },
+      "models": {
+        "minimax/MiniMax-M2.1": {
+          "alias": "Minimax"
+        },
+        "anthropic/claude-opus-4-5": {
+          "alias": "opus"
+        },
+        "huggingface/deepseek-ai/DeepSeek-V3.2": {
+          "alias": "deepseek"
+        },
+        "huggingface/moonshotai/Kimi-K2.5": {
+          "alias": "kimi"
+        },
+        "lmstudio/lmstudio-community/Qwen3-32B-MLX-4bit": {
+          "alias": "qwen-32b"
+        },
+        "lmstudio/lmstudio-community/QwQ-32B-GGUF": {
+          "alias": "qwq-32b"
+        },
+        "lmstudio/Ex0bit/MiniMax-M2.1-PRISM": {
+          "alias": "minimax-local"
+        }
+      },
+      "workspace": "/Users/hans/.openclaw/workspace",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    }
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto"
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "boot-md": {
+          "enabled": true
+        },
+        "session-memory": {
+          "enabled": true
+        },
+        "command-logger": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "channels": {
+    "feishu": {
+      "appId": "cli_a9f5a86d79f9dcd1",
+      "appSecret": "57NUmkWKTSY3oB2Q182uIexcZ3j0DETw",
+      "connectionMode": "websocket",
+      "domain": "feishu",
+      "enabled": true,
+      "groupPolicy": "open",
+      "dmPolicy": "open",
+      "allowFrom": [
+        "*"
+      ]
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "650b40007a90b4f5dd6a1dd1e43107ddb87d22b2591357b4"
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "npm"
+    }
+  },
+  "plugins": {
+    "entries": {
+      "feishu": {
+        "enabled": true
+      },
+      "minimax-portal-auth": {
+        "enabled": true
+      }
+    }
+  }
+}
