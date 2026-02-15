@@ -1,0 +1,66 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: project-management-system
+  
+  # OceanBase 数据源
+  datasource:
+    driver-class-name: com.oceanbase.jdbc.Driver
+    url: jdbc:oceanbase://127.0.0.1:2881/project_manager?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
+    username: root
+    password: root123
+  
+  # Redis 配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  
+  # Kafka 配置
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: project-system
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# Knife4j 配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: default
+      paths-to-match: /**
+      packages-to-scan: com.projectmanager
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+# JWT 配置
+jwt:
+  secret: project-management-system-jwt-secret-key-2024
+  expiration: 86400000
+
+# 日志配置
+logging:
+  level:
+    com.projectmanager: debug

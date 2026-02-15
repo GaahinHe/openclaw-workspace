@@ -155,21 +155,194 @@
 - **位置**：中国大陆
 - **网络环境**：可能需要代理（Clash）
 - **API 访问**：优先使用本地模型（LM Studio），复杂问题使用 API
+- **故障排查**：任何报错优先考虑网络问题
 
 ### 模型配置策略
-1. **简单任务**：使用本地 LM Studio 模型（更快、无需网络）
-2. **复杂任务**：使用 API 模型（MiniMax M2.1 + fallbacks）
-3. **fallbacks 列表**：包含多个国内可用模型作为备选
 
-### 本地模型配置
-- **平台**：LM Studio
-- **默认端口**：1234（OpenAI 兼容 API）
-- **配置位置**：`~/.openclaw/openclaw.json`
+#### 当前配置
+- **本地模型**：LM Studio - Qwen3-32B (`http://localhost:1234/v1`)
+- **API 模型**：MiniMax M2.1 (`https://api.minimax.io/anthropic`)
+- **Fallallbacks**：国内多个备选模型
 
-### 代理配置
-- **代理软件**：Clash（有时启用）
-- **影响**：GitHub 访问、API 调用可能需要代理
-- **网络报错处理**：优先考虑网络问题
+#### 模型路由策略
+| 任务类型 | 使用模型 | 原因 |
+|---------|---------|------|
+| 简单问答 | lm-studio/qwen/qwen3-32b (fallback首位) | 免费、快速、无需网络 |
+| 代码/复杂推理 | minimax/MiniMax-M2.1 (primary) | 更强的推理能力 |
+
+#### Fallbacks 列表顺序
+1. `lm-studio/qwen/qwen3-32b` - 本地 Qwen3-32B（优先本地）
+2. 其他 API 模型作为备选
+
+---
+
+## 媒体下载配置（2026-02-03）
+
+### 下载工具
+- **qBittorrent**：已安装并运行
+- **配置文件**：`~/Library/Application Support/qBittorrent/qBittorrent.conf`
+
+### 存储路径
+| 类型 | 路径 |
+|------|------|
+| 主目录 | `/Volumes/exFAT大仓库/HDMedia/` |
+| 动漫 | `/Volumes/exFAT大仓库/HDMedia/动漫/` |
+| 美剧 | `/Volumes/exFAT大仓库/HDMedia/美剧/` |
+| 电影 | `/Volumes/exFAT大仓库/HDMedia/电影/` |
+| 临时 | `/Volumes/exFAT大仓库/HDMedia/temp/` |
+
+### 追更清单
+| 类型 | 名称 | 过滤规则 | 保存位置 |
+|------|------|---------|---------|
+| 动漫 | 海贼王 | One Piece + Wano/Kaidou/和之国 | 动漫 |
+| 美剧 | 怪奇物语 | Stranger Things | 美剧 |
+| 美剧 | 生活大爆炸 | Big Bang Theory | 美剧 |
+| 美剧 | 瑞克与莫迪 | Rick and Morty | 美剧 |
+| 电影 | 蝙蝠侠：黑暗骑士崛起 | Dark Knight Rises | 电影 |
+
+### RSS 过滤规则文件
+- `~/Library/Application Support/qBittorrent/rss/filters/one_piece.json`
+- `~/Library/Application Support/qBittorrent/rss/filters/stranger_things.json`
+- `~/Library/Application Support/qBittorrent/rss/filters/big_bang_theory.json`
+- `~/Library/Application Support/qBittorrent/rss/filters/rick_and_morty.json`
+
+### RSS 订阅源
+- **Nyaa** (https://nyaa.si/?page=rss) - 动漫资源
+- **EZTV** (https://eztv.re/ezrss.xml) - 美剧资源
+
+### 配置历史
+- **2026-02-03**：安装 qBittorrent 5.0.5，配置下载路径和 RSS 自动过滤规则
+- **2026-02-03**：创建 MCP 和 Skill，实现完整电脑控制能力
+
+## MCP 与技能配置（2026-02-03）
+
+### 已配置的 MCP 服务器
+
+#### computer-control（MCP）
+- **路径**：`~/.openclaw/mcp-servers/computer-control.js`
+- **功能**：
+  - 截图（screenshot）
+  - 鼠标控制（click, move, position）
+  - 键盘控制（type, press）
+  - 屏幕信息（resolution）
+  - 应用控制（open_app）
+  - 命令执行（execute_command）
+- **协议版本**：2024-11-05
+
+#### Skill：computer-control
+- **路径**：`~/.openclaw/skills/computer-control/`
+- **文档**：`SKILL.md`
+- **脚本**：
+  - `screenshot.sh` - 截屏
+  - `click.sh` - 鼠标点击
+  - `move.sh` - 鼠标移动
+  - `type.sh` - 键盘输入
+  - `press.sh` - 按键
+  - `position.sh` - 鼠标位置
+  - `resolution.sh` - 屏幕分辨率
+  - `open-app.sh` - 打开应用
+  - `exec.sh` - 执行命令
+
+### 可用的工具
+
+| 工具 | 状态 | 用途 |
+|------|------|------|
+| `exec` | ✅ 可用 | 执行 Shell 命令 |
+| `screenshot` | ✅ 可用 | 屏幕截图 |
+| `mouse_click` | ✅ 可用 | 鼠标点击 |
+| `mouse_move` | ✅ 可用 | 鼠标移动 |
+| `keyboard_type` | ✅ 可用 | 键盘输入 |
+| `screen_resolution` | ✅ 可用 | 获取分辨率 |
+| `browser` | ⚠️ 需配置 Chrome 扩展 | 浏览器控制 |
+| `nodes` | ⚠️ 无配对节点 | 屏幕/相机控制 |
+
+### 屏幕信息
+- **分辨率**：1920 x 1080 (1080p FHD)
+- **刷新率**：60Hz
+
+### 配置历史
+- **2026-02-03**：创建 computer-control MCP 服务器
+  - 功能：截图、鼠标、键盘、窗口管理
+  - 脚本：9 个控制脚本
+  - 重启 Gateway 使配置生效
+
+---
+
+## MCP 与技能配置
+
+### 已配置的技能（2026-02-03）
+
+#### 1. media-downloader（媒体下载管理）
+- **路径**: `~/.openclaw/skills/media-downloader/`
+- **功能**: qBittorrent 下载管理、RSS 监控、磁盘空间检查
+- **脚本**:
+  - `status.sh` - 查看下载状态
+  - `add_torrent.sh` - 添加下载
+  - `disk_space.sh` - 磁盘空间
+  - `rss_list.sh` - RSS 列表
+- **使用场景**: 管理追更、检查下载进度
+
+#### 2. screen-automation（屏幕自动化）
+- **路径**: `~/.openclaw/skills/screen-automation/`
+- **功能**: 截图、窗口管理、UI 交互
+- **脚本**:
+  - `screenshot.sh` - 截屏
+  - `resolution.sh` - 获取分辨率
+  - `list_windows.sh` - 列出窗口
+  - `click.sh`, `type.sh` - 点击和输入
+- **使用场景**: 屏幕阅读、UI 自动化
+
+#### 3. system-manager（系统管理）
+- **路径**: `~/.openclaw/skills/system-manager/`
+- **功能**: 系统监控、进程管理、网络检查
+- **脚本**:
+  - `sysinfo.sh` - 系统信息
+  - `openclaw_status.sh` - OpenClaw 状态
+  - `openclaw_restart.sh` - 重启 OpenClaw
+  - `cpu.sh`, `memory.sh`, `disk.sh` - 性能监控
+- **使用场景**: 系统维护、故障排查
+
+### 可用的工具
+
+| 工具 | 状态 | 用途 |
+|------|------|------|
+| `exec` | ✅ 可用 | 执行 Shell 命令 |
+| `browser` | ⚠️ 需配置 Chrome 扩展 | 浏览器控制 |
+| `nodes` | ⚠️ 无配对节点 | 屏幕/相机控制 |
+| `message` | ✅ 可用 | 消息发送 |
+| `cron` | ✅ 可用 | 定时任务 |
+| `sessions_*` | ✅ 可用 | 会话管理 |
+
+### 权限提升计划
+
+1. **短期**（已完成）:
+   - ✅ 创建 3 个自定义 Skill
+   - ✅ 启用系统命令执行
+
+2. **中期**:
+   - [ ] 安装 OpenClaw 桌面应用（启用 nodes）
+   - [ ] 配置 Chrome 扩展（启用 browser）
+   - [ ] 安装 qBittorrent CLI（增强下载管理）
+
+3. **长期**:
+   - [ ] 配置 MCP 服务器（跨应用集成）
+   - [ ] 集成 AI 视觉模型（屏幕理解）
+
+### 本机能力验证
+
+- **截图**: ✅ 可用（`screencapture` 命令）
+- **窗口管理**: ✅ 可用（AppleScript）
+- **系统命令**: ✅ 可用（exec 工具）
+- **文件操作**: ✅ 可用（read/write/edit）
+
+### 配置记录
+
+| 日期 | 动作 | 影响 |
+|------|------|------|
+| 2026-02-03 | 创建 media-downloader Skill | 增强下载管理能力 |
+| 2026-02-03 | 创建 screen-automation Skill | 增强屏幕控制能力 |
+| 2026-02-03 | 创建 system-manager Skill | 增强系统管理能力 |
+| 2026-02-03 | 重启 OpenClaw gateway | 服务恢复正常 |
 
 ---
 
@@ -185,3 +358,86 @@
 2. `USER.md` - 了解你的情况
 3. `memory/YYYY-MM-DD.md`（今天和昨天）- 近期上下文
 4. `MEMORY.md`（仅主会话）- 核心长期记忆
+
+---
+
+## 2026-02-03 更新
+
+### MCP v2.0 升级
+
+**重大更新**：重写 computer-control MCP server，集成 cliclick 工具
+
+#### 新增功能
+- ✅ 鼠标拖拽（mouse_drag）
+- ✅ 屏幕取色（screen_color）- RGB + HEX
+- ✅ 等待延时（wait）
+- ✅ 右键点击
+- ✅ 双击支持
+- ✅ 修饰键支持（cmd, option, ctrl, shift）
+
+#### 依赖工具
+- **cliclick**：已通过 `brew install cliclick` 安装
+- 路径：`/opt/homebrew/Cellar/cliclick/5.1`
+
+#### 功能测试结果
+```
+屏幕分辨率: 1920x1080 ✓
+鼠标控制: 正常 ✓
+键盘输入: 正常 ✓
+屏幕取色: 正常 ✓
+```
+
+#### 配置位置
+- MCP Server: `~/.openclaw/mcp-servers/computer-control.js`
+- Gateway: 已重启，配置生效
+
+---
+
+**作者**：Hans TheBot
+**时间**：2026-02-03 15:50 PST
+
+---
+
+## 2026-02-03 更新
+
+### 项目管理系统开发完成
+
+**位置**: `~/.openclaw/workspace/project-management-system/`
+
+#### 技术栈
+| 组件 | 技术 | 状态 |
+|------|------|------|
+| 前端 | Vue 3 + Element Plus | ✅ |
+| 后端 | Spring Boot 3.2 + Java 21 | ✅ |
+| ORM | MyBatis-Plus | ✅ |
+| 认证 | JWT | ✅ |
+| 数据库 | OceanBase | ⏳ Docker |
+| 消息队列 | Kafka | ⏳ Docker |
+
+#### 已完成
+- 24 个后端 Java 文件
+- 11 个前端 Vue 文件
+- Docker Compose 编排配置
+- 数据库初始化脚本
+- 一键安装/启动脚本
+
+#### 文件清单
+- `README.md` - 项目说明
+- `DOCKER_QUICKSTART.md` - Docker 启动指南
+- `install.sh` - 环境安装脚本
+- `start.sh` - 启动脚本
+- `docs/init-db.sql` - 数据库脚本
+
+#### 启动方式
+```bash
+# 1. 安装 Docker Desktop（手动）
+# 2. docker-compose up -d
+# 3. 初始化数据库
+# 4. mvn spring-boot:run (后端)
+# 5. npm run dev (前端)
+```
+
+#### 访问地址
+- 前端: localhost:3000
+- 后端: localhost:8080
+- Swagger: localhost:8080/doc.html

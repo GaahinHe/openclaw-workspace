@@ -1,0 +1,63 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: project-management-system
+  
+  # H2 数据库（本地测试，无需 Docker）
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:projectdb;DB_CLOSE_DELAY=-1;MODE=MySQL
+    username: sa
+    password: 
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+  
+  # H2 控制台（开发用）
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  # JPA 自动建表
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# Knife4j 配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+# JWT 配置
+jwt:
+  secret: project-management-system-jwt-secret-key-2024-for-local-testing
+  expiration: 86400000
+
+# 日志配置
+logging:
+  level:
+    com.projectmanager: debug
+    org.springframework.security: debug
