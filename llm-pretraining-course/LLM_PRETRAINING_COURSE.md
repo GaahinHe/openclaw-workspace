@@ -2,6 +2,39 @@
 
 > 基于"低成本预训练经验"理念的系统化学习路径
 > 目标：具备大厂面试官问不倒的预训练能力
+> 
+> **硬件方案**：Mac Studio (M2 Ultra 64GB) 本地学习 + 云端GPU训练
+
+---
+
+## 🎯 课程说明
+
+### 本地 vs 云端分工
+
+| 环境 | 用途 | 框架 |
+|------|------|------|
+| **Mac Studio本地** | 学习PyTorch框架、跑通代码逻辑、小batch实验 | PyTorch (CPU模式) |
+| **云端GPU** | 大模型预训练（1B+参数）、分布式训练 | PyTorch + DeepSpeed + CUDA |
+
+### M2 Ultra 64GB 本地训练说明
+
+```bash
+# Mac Studio上PyTorch的行为：
+# 1. 不支持CUDA（NVIDIA GPU）
+# 2. 支持MPS（Metal Performance Shaders），但加速有限
+# 3. 建议：学习用CPU跑通代码，训练用云端GPU
+
+# 本地验证安装
+python << 'EOF'
+import torch
+print(f"PyTorch版本: {torch.__version__}")
+print(f"CUDA可用: {torch.cuda.is_available()}")
+print(f"MPS可用: {torch.backends.mps.is_available()}")
+print(f"运行设备: {'CUDA GPU' if torch.cuda.is_available() else 'CPU/MPS'}")
+EOF
+```
+
+> **核心原则**：本课程所有代码都基于PyTorch，经验可直接迁移到企业级NVIDIA GPU训练环境。
 
 ---
 
@@ -112,17 +145,19 @@ python << 'EOF'
 import torch
 print(f"PyTorch版本: {torch.__version__}")
 print(f"CUDA可用: {torch.cuda.is_available()}")
-print(f"Metal可用: {torch.backends.mps.is_available()}")
-print(f"设备数量: {torch.cuda.device_count() if torch.cuda.is_available() else 'MPS (Apple Silicon)'}")
+print(f"CUDA可用: {torch.cuda.is_available()}")
+print(f"设备数量: {torch.cuda.device_count()}")
+print(f"设备: {'CUDA' if torch.cuda.is_available() else 'CPU'}")
 
 # 测试显存
 if torch.cuda.is_available():
     print(f"GPU显存: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
-elif torch.backends.mps.is_available():
-    print("使用Apple Silicon MPS后端")
+    print(f"GPU型号: {torch.cuda.get_device_name(0)}")
+else:
+    print("使用CPU训练（Mac Studio本地学习用，云端需CUDA环境）")
 EOF
 
-# 安装DeepSpeed（本地演示用）
+# 安装DeepSpeed
 pip install deepspeed
 ```
 
@@ -225,18 +260,23 @@ class Trainer:
 
 **周末实践：**
 ```bash
-# 安装Flash Attention（Mac Studio可能不支持CUDA版本）
+# 安装Flash Attention（仅CUDA环境支持）
+# Mac Studio本地学习可跳过，云端训练必须安装
 pip install flash-attn --no-build-isolation
 
-# 测试（如果你的设备支持）
+# 测试（如果你的设备支持CUDA）
 python << 'EOF'
-try:
-    import flash_attn
-    print("Flash Attention 可用")
-except ImportError:
-    print("Flash Attention 不可用（可能需要CUDA环境）")
+import torch
+if torch.cuda.is_available():
+    try:
+        import flash_attn
+        print("Flash Attention 可用 ✓")
+    except ImportError:
+        print("Flash Attention 不可用（需重新安装CUDA版本）")
+else:
+    print("使用CPU/MPS，Flash Attention不可用（需云端CUDA环境）")
 
-# 使用替代方案：Pytorch Native Attention
+# 使用替代方案：PyTorch Native Attention
 python << 'EOF'
 import torch.nn.functional as F
 
@@ -487,14 +527,17 @@ python pretrain_gpt.py
 
 ## 💻 你的实操环境配置
 
-### 硬件环境（Mac Studio）
+### 硬件环境
 
-| 组件 | 配置 | 说明 |
-|------|------|------|
-| **CPU** | Apple Silicon (M系列) | ARM架构 |
-| **GPU** | 集成GPU | 支持MPS加速 |
-| **内存** | 建议16GB+ | 越大越好 |
-| **存储** | 建议50GB+ | 用于数据集和模型 |
+| 组件 | 本地配置（Mac Studio） | 云端配置（训练用） |
+|------|----------------------|-------------------|
+| **CPU** | Apple Silicon (M系列) | x86_64 (Intel/AMD) |
+| **GPU** | 集成GPU（MPS加速有限） | NVIDIA A100/4090 (CUDA) |
+| **内存** | 建议16GB+ | 建议64GB+ |
+| **存储** | 建议50GB+ | 建议200GB+ |
+| **用途** | 代码学习、小规模实验 | 大模型预训练/微调 |
+
+> **说明**：Mac Studio本地主要用于学习PyTorch框架、跑通代码逻辑。真正的大模型训练（1B+参数）需要在云端GPU上进行。
 
 ### 本地环境配置
 
@@ -508,15 +551,19 @@ bash Miniconda3-latest-MacOSX-arm64.sh
 conda create -n pretrain python=3.10 -y
 conda activate pretrain
 
-# 3. 安装PyTorch（支持MPS）
-pip install torch torchvision torchaudio
+# 3. 安装PyTorch（云端GPU训练用CUDA版本）
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # 验证安装
 python << 'EOF'
 import torch
 print(f"PyTorch: {torch.__version__}")
-print(f"MPS可用: {torch.backends.mps.is_available()}")
-print(f"设备: {'MPS' if torch.backends.mps.is_available() else 'CPU'}")
+print(f"CUDA可用: {torch.cuda.is_available()}")
+if torch.cuda.is_available():
+    print(f"CUDA版本: {torch.version.cuda}")
+    print(f"GPU显存: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+else:
+    print("使用CPU训练（Mac Studio本地学习用，云端需CUDA环境）")
 EOF
 
 # 4. 安装核心依赖

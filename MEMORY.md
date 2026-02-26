@@ -141,6 +141,7 @@
 - [ ] 完善 AGENTS.md 学习追踪流程
 - [ ] 创建具体的 skills 文件（可选）
 - [ ] 初始化第一个学习领域
+- [ ] **飞书安全员配置**：等待用户提供 verifyToken（两个应用）
 
 ### 学习层面
 - [ ] 选择一个子领域开始学习
@@ -160,19 +161,18 @@
 ### 模型配置策略
 
 #### 当前配置
-- **本地模型**：LM Studio - Qwen3-32B (`http://localhost:1234/v1`)
-- **API 模型**：MiniMax M2.1 (`https://api.minimax.io/anthropic`)
-- **Fallallbacks**：国内多个备选模型
+- **唯一模型**：Bailian - Qwen3-Max (`https://dashscope.aliyuncs.com/compatible-mode/v1`)
+- **模型ID**：qwen3-max-2026-01-23
+- **上下文窗口**：262,144 tokens
 
 #### 模型路由策略
 | 任务类型 | 使用模型 | 原因 |
 |---------|---------|------|
-| 简单问答 | lm-studio/qwen/qwen3-32b (fallback首位) | 免费、快速、无需网络 |
-| 代码/复杂推理 | minimax/MiniMax-M2.1 (primary) | 更强的推理能力 |
+| 所有任务 | bailian/qwen3-max-2026-01-23 (primary) | 统一使用单一高性能模型，简化配置 |
 
-#### Fallbacks 列表顺序
-1. `lm-studio/qwen/qwen3-32b` - 本地 Qwen3-32B（优先本地）
-2. 其他 API 模型作为备选
+#### 配置变更历史
+- **2026-02-24**：移除多模型路由，只保留bailian/qwen3-max-2026-01-23
+- **备份文件**：`/Users/hans/.openclaw/tmp/model_config_backup_2026-02-24.json`
 
 ---
 

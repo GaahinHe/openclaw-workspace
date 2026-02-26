@@ -1,0 +1,119 @@
+{
+  "MatMul": {
+    "status": "success",
+    "results": [
+      {
+        "size": 512,
+        "time_ms": 0.13329170178622007,
+        "gflops": 2013.894731650514
+      },
+      {
+        "size": 1024,
+        "time_ms": 0.22109579294919968,
+        "gflops": 9712.91049619121
+      },
+      {
+        "size": 2048,
+        "time_ms": 1.3597958022728562,
+        "gflops": 12634.153712847463
+      }
+    ]
+  },
+  "Memory": {
+    "status": "success",
+    "results": [
+      {
+        "size": 1024,
+        "time_ms": 0.09978750022128224,
+        "gbps": 84.06471733832366
+      },
+      {
+        "size": 2048,
+        "time_ms": 0.11486875009723008,
+        "gbps": 292.1110569375746
+      },
+      {
+        "size": 4096,
+        "time_ms": 0.3756645799148828,
+        "gbps": 357.28076368128916
+      }
+    ]
+  },
+  "Forward": {
+    "status": "success",
+    "results": [
+      {
+        "config": "3L-256H",
+        "batch": 32,
+        "time_ms": 0.19945916021242738
+      },
+      {
+        "config": "6L-512H",
+        "batch": 16,
+        "time_ms": 0.3456066595390439
+      },
+      {
+        "config": "12L-768H",
+        "batch": 8,
+        "time_ms": 0.601678341627121
+      }
+    ]
+  },
+  "Backward": {
+    "status": "success",
+    "results": [
+      {
+        "batch_size": 8,
+        "time_ms": 3.432837501168251,
+        "samples_per_sec": 2330.4336419295896
+      },
+      {
+        "batch_size": 16,
+        "time_ms": 1.1707521043717861,
+        "samples_per_sec": 13666.428563530484
+      },
+      {
+        "batch_size": 32,
+        "time_ms": 1.1892208480276167,
+        "samples_per_sec": 26908.374548826338
+      }
+    ]
+  },
+  "Activations": {
+    "status": "success",
+    "results": [
+      {
+        "function": "ReLU",
+        "time_ms": 1.4409508393146098
+      },
+      {
+        "function": "GELU",
+        "time_ms": 1.4463033387437463
+      },
+      {
+        "function": "SiLU",
+        "time_ms": 1.4581008185632527
+      },
+      {
+        "function": "Softmax",
+        "time_ms": 1.5003433194942772
+      }
+    ]
+  },
+  "FP16": {
+    "status": "success",
+    "results": [
+      {
+        "dtype": "FP32",
+        "time_ms": 0.17229999648407102
+      },
+      {
+        "dtype": "FP16",
+        "time_ms": 3.446789598092437
+      },
+      {
+        "speedup": 0.04998854487068991
+      }
+    ]
+  }
+}

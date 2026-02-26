@@ -1,0 +1,15 @@
+{
+  "test": "PyTorch_MPS_Training",
+  "framework": "PyTorch 2.10 (MPS)",
+  "model": "TinyTransformer (GPT-2 scale)",
+  "parameters": 19552512,
+  "epochs": 1,
+  "iterations": 50,
+  "batch_size": 8,
+  "final_loss": 9.389253616333008,
+  "avg_loss_10": 9.383699226379395,
+  "elapsed_seconds": 4.243544816970825,
+  "peak_memory_gb": 0.4548797607421875,
+  "device": "mps",
+  "status": "SUCCESS"
+}

@@ -210,3 +210,80 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
+
+---
+
+## 🛡️ 保护协议 (Protection Protocol)
+
+**生效日期**：2026-02-25
+**文档**：`workspace/PROTECTION_PROTOCOL.md`
+
+### 任务执行透明度
+
+| 任务时长 | 汇报频率 | 要求 |
+|---------|---------|------|
+| < 1 分钟 | 完成后 | 结果 + 关键步骤 |
+| 1-5 分钟 | 开始 + 完成 | 预期时间 + 实际结果 |
+| 5-30 分钟 | 每 25% 进度 | 当前步骤 + 剩余估计 |
+| > 30 分钟 | 每 10 分钟 | 进度 + 是否有阻塞 |
+
+**阻塞定义**：操作超过预期时间 2 倍 → 立即报告 + 等待确认
+
+### 配置文件保护
+
+修改以下文件前**必须**：
+1. 自动创建带时间戳的备份
+2. 告知用户修改内容和影响
+3. 等待确认后再应用
+4. 修改后验证服务状态
+
+**受保护文件**：
+- `~/.openclaw/openclaw.json` 🔴
+- `~/.openclaw/mcp-servers/*.js` 🔴
+- `~/.openclaw/skills/*/SKILL.md` 🟡
+- `~/.openclaw/extensions/*/index.ts` 🔴
+
+### 操作审计
+
+高风险操作必须记录到 `memory/audit-log.md`：
+- 配置文件修改
+- 服务重启/停止
+- 删除文件（workspace 外）
+- 系统级命令
+
+### 健康监控
+
+**自动运行**：
+- 健康检查：每 15 分钟 (`~/.openclaw/scripts/healthcheck.sh`)
+- 自动恢复：每 5 分钟 (`~/.openclaw/scripts/auto-recover.sh`)
+
+**日志位置**：
+- 健康日志：`~/.openclaw/logs/healthcheck.log`
+- 告警日志：`~/.openclaw/logs/health-alerts.log`
+- 恢复日志：`~/.openclaw/logs/auto-recover.log`
+
+**手动检查**：
+```bash
+~/.openclaw/scripts/healthcheck.sh --verbose
+```
+
+### 紧急命令
+
+```bash
+# 一键回滚
+alias openclaw-rollback='cp $(ls -t ~/.openclaw/openclaw.json.bak.* | head -1) ~/.openclaw/openclaw.json && openclaw gateway restart'
+
+# 紧急停止
+alias openclaw-emergency-stop='pkill -f openclaw && launchctl bootout gui/$UID/ai.openclaw.gateway'
+
+# 紧急恢复
+alias openclaw-emergency-recover='openclaw gateway start && sleep 3 && openclaw status'
+```
+
+### 故障排查顺序
+
+1. 进程状态：`ps aux | grep openclaw`
+2. 端口占用：`lsof -i :18789`
+3. 日志检查：`tail -100 /tmp/openclaw/openclaw-*.log`
+4. 配置语法：`cat ~/.openclaw/openclaw.json | python3 -m json.tool`
+5. 网络连通：`curl -I https://dashscope.aliyuncs.com`

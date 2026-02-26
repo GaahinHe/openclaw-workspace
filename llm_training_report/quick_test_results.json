@@ -1,0 +1,48 @@
+{
+  "PyTorch_MPS": {
+    "status": "success",
+    "mps_available": true,
+    "operations": [
+      "matmul",
+      "autograd",
+      "fp16"
+    ],
+    "memory_gb": 0.2200927734375,
+    "elapsed_sec": 0
+  },
+  "Simple_Training": {
+    "status": "success",
+    "model": "TinyNet",
+    "parameters": 74826,
+    "iterations": 100,
+    "final_loss": 2.300240993499756,
+    "avg_loss": 2.3088785767555238,
+    "memory_gb": 0.3551483154296875,
+    "elapsed_sec": 1.295619010925293
+  },
+  "Transformers": {
+    "status": "success",
+    "model": "GPT-2",
+    "parameters": 124439808,
+    "memory_gb": 0.556610107421875,
+    "elapsed_sec": 9.306766986846924,
+    "sample_output": "Hello, I am a very serious person and I want to clarify that I do not hold a position"
+  },
+  "PEFT_LoRA": {
+    "status": "success",
+    "base_model": "GPT-2",
+    "lora_r": 8,
+    "trainable_params": 1179648,
+    "total_params": 125619456,
+    "memory_gb": 0.3420867919921875,
+    "elapsed_sec": 5.5779008865356445
+  },
+  "MLX_Native": {
+    "status": "error",
+    "error": "module 'mlx.core' has no attribute 'list_devices'"
+  },
+  "Quantization": {
+    "status": "error",
+    "error": "The operator 'aten::quantize_per_tensor' is not currently implemented for the MPS device. If you want this op to be considered for addition please comment on https://github.com/pytorch/pytorch/issues/141287 and mention use-case, that resulted in missing op as well as commit hash 449b1768410104d3ed79d3bcfe4ba1d65c7f22c0. As a temporary fix, you can set the environment variable `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a fallback for this op. WARNING: this will be slower than running natively on MPS."
+  }
+}

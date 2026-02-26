@@ -1,92 +1,37 @@
 {
   "meta": {
-    "lastTouchedVersion": "2026.1.30",
-    "lastTouchedAt": "2026-02-02T06:24:56.947Z"
+    "lastTouchedVersion": "2026.2.24",
+    "lastTouchedAt": "2026-02-25T07:32:00.000Z"
   },
   "wizard": {
-    "lastRunAt": "2026-02-02T06:24:56.937Z",
+    "lastRunAt": "2026-02-25T07:03:26.754Z",
     "lastRunVersion": "2026.1.30",
-    "lastRunCommand": "configure",
+    "lastRunCommand": "doctor",
     "lastRunMode": "local"
-  },
-  "auth": {
-    "profiles": {
-      "minimax:default": {
-        "provider": "minimax",
-        "mode": "api_key"
-      }
-    }
   },
   "models": {
     "mode": "merge",
     "providers": {
-      "minimax": {
-        "baseUrl": "https://api.minimax.io/anthropic",
-        "api": "anthropic-messages",
+      "bailian": {
+        "baseUrl": "https://coding.dashscope.aliyuncs.com/v1",
+        "apiKey": "sk-sp-7ef346ba2ea54f34ba471c2a2270af37",
+        "api": "openai-completions",
         "models": [
           {
-            "id": "MiniMax-M2.1",
-            "name": "MiniMax M2.1",
-            "reasoning": false,
-            "input": [
-              "text"
-            ],
-            "cost": {
-              "input": 15,
-              "output": 60,
-              "cacheRead": 2,
-              "cacheWrite": 10
-            },
-            "contextWindow": 200000,
-            "maxTokens": 8192
-          }
-        ]
-      },
-      "lmstudio": {
-        "baseUrl": "http://localhost:1234/v1",
-        "api": "openai-chat",
-        "models": [
-          {
-            "id": "lmstudio-community/Qwen3-32B-MLX-4bit",
-            "name": "Qwen3-32B (本地)",
+            "id": "qwen3-max-2026-01-23",
+            "name": "qwen3-max-thinking",
             "reasoning": false,
             "input": [
               "text"
             ],
             "cost": {
               "input": 0,
-              "output": 0
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
             },
-            "contextWindow": 32768,
-            "maxTokens": 4096
-          },
-          {
-            "id": "lmstudio-community/QwQ-32B-GGUF",
-            "name": "QwQ-32B (本地)",
-            "reasoning": false,
-            "input": [
-              "text"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0
-            },
-            "contextWindow": 32768,
-            "maxTokens": 4096
-          },
-          {
-            "id": "Ex0bit/MiniMax-M2.1-PRISM",
-            "name": "MiniMax-M2.1-PRISM (本地)",
-            "reasoning": false,
-            "input": [
-              "text"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0
-            },
-            "contextWindow": 200000,
-            "maxTokens": 8192
+            "contextWindow": 262144,
+            "maxTokens": 65536
           }
         ]
       }
@@ -95,37 +40,11 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "lmstudio/lmstudio-community/Qwen3-32B-MLX-4bit",
-        "fallbacks": [
-          "lmstudio/lmstudio-community/QwQ-32B-GGUF",
-          "lmstudio/Ex0bit/MiniMax-M2.1-PRISM",
-          "minimax/MiniMax-M2.1",
-          "anthropic/claude-opus-4-5",
-          "huggingface/deepseek-ai/DeepSeek-V3.2",
-          "huggingface/moonshotai/Kimi-K2.5"
-        ]
+        "primary": "bailian/qwen3-max-2026-01-23"
       },
       "models": {
-        "minimax/MiniMax-M2.1": {
-          "alias": "Minimax"
-        },
-        "anthropic/claude-opus-4-5": {
-          "alias": "opus"
-        },
-        "huggingface/deepseek-ai/DeepSeek-V3.2": {
-          "alias": "deepseek"
-        },
-        "huggingface/moonshotai/Kimi-K2.5": {
-          "alias": "kimi"
-        },
-        "lmstudio/lmstudio-community/Qwen3-32B-MLX-4bit": {
-          "alias": "qwen-32b"
-        },
-        "lmstudio/lmstudio-community/QwQ-32B-GGUF": {
-          "alias": "qwq-32b"
-        },
-        "lmstudio/Ex0bit/MiniMax-M2.1-PRISM": {
-          "alias": "minimax-local"
+        "bailian/qwen3-max-2026-01-23": {
+          "alias": "qwen3-max-thinking"
         }
       },
       "workspace": "/Users/hans/.openclaw/workspace",
