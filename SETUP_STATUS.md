@@ -73,6 +73,17 @@ openclaw configure --section web
 
 ---
 
+## 🚀 快速配置脚本
+
+已创建一键配置脚本：
+```bash
+~/.openclaw/scripts/configure-brave.sh
+```
+
+运行后按提示输入 API Key 即可自动完成配置并重启 Gateway。
+
+---
+
 ## 下一步行动
 
 1. **立即**: 获取 Brave Search API Key (用户操作)
