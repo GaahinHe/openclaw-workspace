@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notion Clipper Pro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 320px;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      color: #37352f;
+      background: #ffffff;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e1e1e0;
+    }
+
+    .logo {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #6b6b6b;
+      margin-top: 5px;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #000;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #37352f;
+    }
+
+    .btn-secondary {
+      background: #f1f1ef;
+      color: #37352f;
+    }
+
+    .btn-secondary:hover {
+      background: #e1e1e0;
+    }
+
+    .settings {
+      padding-top: 15px;
+      border-top: 1px solid #e1e1e0;
+    }
+
+    .setting-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+    }
+
+    .setting-label {
+      font-size: 13px;
+      color: #37352f;
+    }
+
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 22px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.3s;
+      border-radius: 22px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #000;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(18px);
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      text-align: center;
+      display: none;
+    }
+
+    .status.success {
+      background: #e6f4ea;
+      color: #1e7e34;
+      display: block;
+    }
+
+    .status.error {
+      background: #fce8e6;
+      color: #c5221f;
+      display: block;
+    }
+
+    .shortcuts {
+      margin-top: 15px;
+      padding: 12px;
+      background: #f7f7f5;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .shortcuts-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #37352f;
+    }
+
+    .shortcut-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      color: #6b6b6b;
+    }
+
+    kbd {
+      background: #fff;
+      border: 1px solid #d1d1d0;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: monospace;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">📋</div>
+    <h1>Notion Clipper Pro</h1>
+    <div class="subtitle">智能网页剪藏工具</div>
+  </div>
+
+  <div class="action-buttons">
+    <button class="btn btn-primary" id="savePageBtn">
+      📄 保存整页
+    </button>
+    <button class="btn btn-secondary" id="saveSelectionBtn">
+      ✂️ 保存选中内容
+    </button>
+  </div>
+
+  <div class="shortcuts">
+    <div class="shortcuts-title">⌨️ 快捷键</div>
+    <div class="shortcut-item">
+      <span>保存整页</span>
+      <kbd>⌘</kbd><kbd>Shift</kbd><kbd>N</kbd>
+    </div>
+    <div class="shortcut-item">
+      <span>保存选中</span>
+      <kbd>⌘</kbd><kbd>Shift</kbd><kbd>S</kbd>
+    </div>
+  </div>
+
+  <div class="settings">
+    <div class="setting-item">
+      <span class="setting-label">自动复制到剪贴板</span>
+      <label class="toggle">
+        <input type="checkbox" id="autoCopyToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="setting-item">
+      <span class="setting-label">包含元数据</span>
+      <label class="toggle">
+        <input type="checkbox" id="metadataToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="status" id="statusMessage"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

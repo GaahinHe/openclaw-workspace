@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 320px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+    }
+    h1 {
+      font-size: 18px;
+      margin: 0 0 16px 0;
+      color: #00ff88;
+    }
+    .status {
+      padding: 12px;
+      background: #2a2a2a;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    .status-label {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 4px;
+    }
+    .status-value {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 6px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #00ff88;
+      color: #000;
+    }
+    .btn-primary:hover {
+      background: #00cc6a;
+    }
+    .btn-secondary {
+      background: #333;
+      color: #fff;
+    }
+    .btn-secondary:hover {
+      background: #444;
+    }
+    .results {
+      margin-top: 16px;
+      padding: 12px;
+      background: #2a2a2a;
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .result-item {
+      padding: 8px;
+      border-bottom: 1px solid #333;
+      font-size: 12px;
+    }
+    .result-item:last-child {
+      border-bottom: none;
+    }
+    .success { color: #00ff88; }
+    .warning { color: #ffaa00; }
+    .error { color: #ff4444; }
+  </style>
+</head>
+<body>
+  <h1>🤖 Auto Test Assistant</h1>
+  
+  <div class="status">
+    <div class="status-label">当前页面</div>
+    <div class="status-value" id="pageTitle">加载中...</div>
+  </div>
+  
+  <div class="status">
+    <div class="status-label">检测到的元素</div>
+    <div class="status-value" id="elementCount">-</div>
+  </div>
+  
+  <button class="btn-primary" id="btnAnalyze">🔍 分析页面</button>
+  <button class="btn-secondary" id="btnExport">📥 导出报告</button>
+  <button class="btn-secondary" id="btnClear">🗑️ 清除数据</button>
+  
+  <div class="results" id="results">
+    <div class="result-item">等待分析...</div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

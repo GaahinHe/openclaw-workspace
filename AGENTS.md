@@ -45,6 +45,34 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - When you make a mistake → document it so future-you doesn't repeat it
 - **Text > Brain** 📝
 
+### 🧠 增强记忆系统 (Semantic Memory)
+
+**新记忆系统**: 使用 BGE-M3 embedding 模型进行语义搜索
+
+```bash
+# 记住内容
+~/.openclaw/scripts/memory/memory-helper.sh main remember "用户偏好" preferences
+
+# 搜索相关内容
+~/.openclaw/scripts/memory/memory-helper.sh main recall "学习习惯"
+
+# 查看最近记忆
+~/.openclaw/scripts/memory/memory-helper.sh main recent 7
+```
+
+**Agent 专属命令**:
+- `~/.openclaw/scripts/memory/main-remember.sh "内容" [领域]`
+- `~/.openclaw/scripts/memory/improver-remember.sh "内容" [领域]`
+- `~/.openclaw/scripts/memory/safety-guard-remember.sh "内容" [领域]`
+- `~/.openclaw/scripts/memory/educator-remember.sh "内容" [领域]`
+
+**使用场景**:
+- 重要决策 → 存入语义记忆
+- 用户偏好 → 存入 semantic memory
+- 经验教训 → 存入 semantic memory + episodic log
+
+**文件记忆仍然需要**: Daily notes 和 MEMORY.md 仍然用于结构化长期记忆
+
 ## Safety
 
 - Don't exfiltrate private data. Ever.

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "self-improving": {
+      "version": "1.2.16",
+      "installedAt": 1773586622205
+    },
+    "find-skills": {
+      "version": "0.1.0",
+      "installedAt": 1773586741829
+    }
+  }
+}

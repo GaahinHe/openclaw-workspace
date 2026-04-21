@@ -1,0 +1,18 @@
+<!-- Notion Clipper Pro Icon (128x128) -->
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="128" height="128" rx="24" fill="#000000"/>
+  
+  <!-- Clipboard -->
+  <rect x="44" y="32" width="40" height="56" rx="4" fill="#FFFFFF"/>
+  <rect x="56" y="28" width="16" height="8" rx="2" fill="#FFFFFF"/>
+  
+  <!-- Lines -->
+  <rect x="50" y="42" width="28" height="3" rx="1.5" fill="#000000"/>
+  <rect x="50" y="50" width="28" height="3" rx="1.5" fill="#000000"/>
+  <rect x="50" y="58" width="20" height="3" rx="1.5" fill="#000000"/>
+  <rect x="50" y="66" width="24" height="3" rx="1.5" fill="#000000"/>
+  
+  <!-- Check mark -->
+  <path d="M58 78 L66 86 L82 70" stroke="#00FF00" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
